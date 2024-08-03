@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import time
 
 
 
@@ -25,14 +26,16 @@ class Network:
         n = len(training_data)
         for j in range(epochs):
             #Repeats the training data for each epoch
+            time1 = time.time()
             random.shuffle(training_data) #Shuffle the training data
             mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, n, mini_batch_size)] #Divide the training data into mini_batches
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta) #Update the weights and biases for each mini_batch (One Step of SGD)
             if test_data:
-                print("Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test))
+                time2 = time.time()
+                print("Epoch {0}: {1} / {2}, took {3:.2f} seconds".format(j, self.evaluate(test_data), n_test, time2-time1))
             else:
-                print("Epoch {0} complete".format(j))
+                print("Epoch {0} complete in {1:.2f} seconds".format(j, time2-time1))
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying gradient descent using backpropagation to a single mini batch.
