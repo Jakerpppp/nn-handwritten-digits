@@ -43,7 +43,7 @@ class Network:
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y) #Return the gradient for the cost function C_x via Backpropagation
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
         self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_w)] #Original W - (Learning Rate/Mini_batch_size)*Gradient for each weight
@@ -55,13 +55,13 @@ class Network:
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         # feedforward
-        activation = x
+        activation = x # input layer    
         activations = [x] # list to store all the activations, layer by layer
         zs = [] # list to store all the z vectors, layer by layer
         for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
+            z = np.dot(w, activation)+b # z = w*a + b for the first layer
             zs.append(z)
-            activation = sigmoid(z)
+            activation = sigmoid(z) # a = sigmoid(z) for the first layer
             activations.append(activation)
         # backward pass
         delta = self.cost_derivative(activations[-1], y) * \
@@ -74,7 +74,7 @@ class Network:
         # second-last layer, and so on.  It's a renumbering of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
-        for l in range(2, self.num_layers):
+        for l in range(2, self.num_layers): # l = 2, 3, 4
             z = zs[-l]
             sp = sigmoid_prime(z)
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
