@@ -4,14 +4,14 @@ import time
 
 
 
-class Network:
+class BasicNetwork:
     def __init__(self, sizes) -> None:
         self.num_layers = len(sizes) 
         self.sizes = sizes #Size of each layer
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]] #Initialize biases randomly omit input layer
         self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])] #Initialize weights randomly omit input layer
 
-    def feedforward(self, a): #Return the output of the network if "a" is input. Applys to each Layer (2 and 3)
+    def feedforward(self, a): #Return the output of the network if "a" is input.
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w,a) + b)
         return a
